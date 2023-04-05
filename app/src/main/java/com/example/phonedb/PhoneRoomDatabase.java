@@ -44,7 +44,8 @@ public abstract class PhoneRoomDatabase extends RoomDatabase {
                 PhoneDao dao = INSTANCE.phoneDao();
                 Phone[] phones = {
                         new Phone("Samsung", "Galaxy S21", "Android 11", "www.samsung.com"),
-                        new Phone("Apple", "iPhone 13", "iOS 15", "www.apple.com")
+                        new Phone("Apple", "iPhone 13", "iOS 15", "www.apple.com"),
+                        new Phone("Apple", "iPhone 14", "iOS 16", "www.apple.com")
                 };
                 dao.insertAll(phones);
             });
