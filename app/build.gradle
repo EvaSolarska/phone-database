@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.example.phonedb'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.phonedb"
@@ -29,6 +29,13 @@ android {
 }
 
 dependencies {
+
+
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+
+    implementation "androidx.room:room-runtime:2.4.0"
+    annotationProcessor "androidx.room:room-compiler:2.4.0"
+    androidTestImplementation "androidx.room:room-testing:2.4.0"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
