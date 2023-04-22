@@ -1,5 +1,7 @@
 package com.example.phonedb;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,11 +18,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private PhoneViewModel mPhoneViewModel;
     private RecyclerView mRecyclerView;
     private PhoneListAdapter mAdapter;
 
+    private FloatingActionButton mMainFab;
+
+    private ActivityResultLauncher<Intent> mActivityResultLauncher;
+
+    private void mainFabClicked(){
+        Intent intent = new Intent(
+                MainActivity.this,NewPhoneActivity.class);
+            mActivityResultLauncher.launch(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +44,19 @@ public class MainActivity extends AppCompatActivity {
         mPhoneViewModel = new ViewModelProvider(this).get(PhoneViewModel.class);
         mPhoneViewModel.getAllPhones().observe(this, phones -> mAdapter.setPhones(phones));
 
+        mActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),result -> {
+                    if(result.getResultCode() == RESULT_OK){
+                        String manufacturer = result.getData().getStringExtra(NewPhoneActivity.EXTRA_MANUFACTURER);
+                        String model = result.getData().getStringExtra(NewPhoneActivity.EXTRA_MODEL);
+                        String androidVersion = result.getData().getStringExtra(NewPhoneActivity.EXTRA_ANDROID_VERSION);
+                        String website = result.getData().getStringExtra(NewPhoneActivity.EXTRA_WEBSITE);
+                        Phone phone = new Phone(manufacturer, model, androidVersion, website);
+                        mPhoneViewModel.insert(phone);
+                    }
+                });
+            mMainFab = findViewById(R.id.fabMain);
+            mMainFab.setOnClickListener(view -> mainFabClicked());
     }
 
     @Override
