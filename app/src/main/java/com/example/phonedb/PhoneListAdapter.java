@@ -27,6 +27,9 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
         mPhones = phones;
         notifyDataSetChanged();
     }
+    public Phone getPosition(int position){
+        return mPhones.get(position);
+    }
 
     @NonNull
     @Override

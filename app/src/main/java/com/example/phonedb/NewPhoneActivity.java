@@ -1,6 +1,7 @@
 package com.example.phonedb;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -64,8 +65,9 @@ public class NewPhoneActivity extends AppCompatActivity {
 
         Button websiteButton = findViewById(R.id.buttonWebsite);
         websiteButton.setOnClickListener(view -> {
-            String website = websiteEditText.getText().toString().trim();
-
+                String website = websiteEditText.getText().toString().trim();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://" + website));
+                startActivity(intent);
         });
     }
 }

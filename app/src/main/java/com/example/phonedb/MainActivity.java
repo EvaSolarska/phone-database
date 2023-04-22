@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,8 +58,20 @@ public class MainActivity extends AppCompatActivity {
                 });
             mMainFab = findViewById(R.id.fabMain);
             mMainFab.setOnClickListener(view -> mainFabClicked());
-    }
 
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    mPhoneViewModel.deletePhone(mAdapter.getPosition(viewHolder.getAdapterPosition()));
+                    Toast.makeText(MainActivity.this,"Phone deleted",Toast.LENGTH_SHORT).show();
+                }
+            }).attachToRecyclerView(mRecyclerView);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
