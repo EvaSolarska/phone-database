@@ -38,4 +38,10 @@ public class PhoneRepository {
             mPhoneDao.delete(phone);
         });
     }
+
+    public void update(Phone phone) {
+        PhoneRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mPhoneDao.update(phone);
+        });
+    }
 }

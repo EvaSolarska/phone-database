@@ -17,6 +17,7 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
 
     private LayoutInflater mLayoutInflater;
     private List<Phone> mPhoneList;
+    private OnItemClickListener listener;
 
     public PhoneListAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -35,8 +36,7 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
     @Override
     public PhoneViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mLayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
-        PhoneViewHolder phoneViewHolder = new PhoneViewHolder(itemView);
-        return phoneViewHolder;
+        return new PhoneViewHolder(itemView);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
         return 0;
     }
 
-    static class PhoneViewHolder extends RecyclerView.ViewHolder {
+    class PhoneViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mManufacturerTextView;
         private TextView mModelTextView;
@@ -64,9 +64,14 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
             super(itemView);
             mManufacturerTextView = itemView.findViewById(R.id.manufacturer_textview);
             mModelTextView = itemView.findViewById(R.id.model_textview);
+
             itemView.setOnClickListener(v -> {
-                Phone phone = (Phone) itemView.getTag();
+                int position = getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION){
+                    listener.onItemClick(mPhones.get(position));
+                }
             });
+
         }
 
         public void bind(Phone phone) {
@@ -74,5 +79,11 @@ public class PhoneListAdapter extends RecyclerView.Adapter<PhoneListAdapter.Phon
             mModelTextView.setText(phone.getModel());
             itemView.setTag(phone);
         }
+    }
+    public interface OnItemClickListener{
+        void onItemClick(Phone phone);
+    }
+    public void setOnItemClickListner(OnItemClickListener listener){
+        this.listener = listener;
     }
 }
